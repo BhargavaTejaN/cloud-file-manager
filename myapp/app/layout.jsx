@@ -12,7 +12,7 @@ import { ParentFolderIdContext } from "../context/ParentFolderId";
 import Storage from "@/components/Storage/Storage";
 import { StorageProvider } from "@/context/StorageContext";
 
-export const metadata = {
+const metadata = {
   title: "Cloud File Manager",
   description: "A Cloud Based File Manager",
 };
