@@ -8,8 +8,9 @@ import SideNavBar from "@/components/SideNavBar";
 import { FireBaseProvider } from "../context/FireBase";
 import Tost from "@/components/Tost";
 import { ShowToastContext } from "../context/ShowTost";
-import {ParentFolderIdContext} from '../context/ParentFolderId';
-
+import { ParentFolderIdContext } from "../context/ParentFolderId";
+import Storage from "@/components/Storage/Storage";
+import { StorageProvider } from "@/context/StorageContext";
 
 export const metadata = {
   title: "Cloud File Manager",
@@ -25,22 +26,26 @@ export default function RootLayout({ children }) {
       <body>
         <Provider>
           <FireBaseProvider>
-            <ParentFolderIdContext.Provider value={{parentFolderId, setParentFolderId}}>
-              <ShowToastContext.Provider
-                value={{ showTostMsg, setShowTostMsg }}
+            <StorageProvider>
+              <ParentFolderIdContext.Provider
+                value={{ parentFolderId, setParentFolderId }}
               >
-                <div className="flex">
-                  <SideNavBar />
-                  <div className="grid grid-cols-1 md:grid-cols-3 w-full">
-                    <div className="col-span-2">{children}</div>
-                    <div className="bg-white p-5 order-first md:order-last">
-                      Storage
+                <ShowToastContext.Provider
+                  value={{ showTostMsg, setShowTostMsg }}
+                >
+                  <div className="flex">
+                    <SideNavBar />
+                    <div className="grid grid-cols-1 md:grid-cols-3 w-full">
+                      <div className="col-span-2">{children}</div>
+                      <div className="bg-white p-5 order-first md:order-last">
+                        <Storage />
+                      </div>
                     </div>
                   </div>
-                </div>
-                {showTostMsg && <Tost msg={showTostMsg} />}
-              </ShowToastContext.Provider>
+                  {showTostMsg && <Tost msg={showTostMsg} />}
+                </ShowToastContext.Provider>
               </ParentFolderIdContext.Provider>
+            </StorageProvider>
           </FireBaseProvider>
         </Provider>
       </body>

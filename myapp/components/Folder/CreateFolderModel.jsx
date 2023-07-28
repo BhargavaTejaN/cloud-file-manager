@@ -10,7 +10,7 @@ import { ShowToastContext } from "@/context/ShowTost";
 import {ParentFolderIdContext} from '../../context/ParentFolderId'
 
 const CreateFolderModel = () => {
-  const {FireStore} = useFireBaseContext();
+  const {createNewFolder} = useFireBaseContext();
   const {data : session} = useSession();
   const {showTostMsg, setShowTostMsg} = useContext(ShowToastContext);
   const {parentFolderId, setParentFolderId} = useContext(ParentFolderIdContext)
@@ -19,13 +19,12 @@ const CreateFolderModel = () => {
   const docId = Date.now().toString()
 
   const onCreate = async() => {
-    await setDoc(doc(FireStore,"Folders",docId),{
-      name:folderName,
-      id : docId,
-      createdBy : session?.user?.email,
-      parentFolderId : parentFolderId
-    })
-    setShowTostMsg("Folder Created");
+    try {
+      const result = await createNewFolder(folderName,"Folders",docId,parentFolderId)
+      setShowTostMsg("Folder Created");
+    } catch (error) {
+      console.log("ERROR WHILE CREATING A NEW FOLDER : ",error)
+    }
   };
 
   return (

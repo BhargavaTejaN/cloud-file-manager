@@ -26,7 +26,7 @@ const FolderList = ({folderList}) => {
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3 gap-4">
         {folderList.map((eachFolder,index) => (
-            <div onClick={() => onFolderClick(eachFolder,index)}>
+            <div key={index} onClick={() => onFolderClick(eachFolder,index)}>
               <FolderItem details={eachFolder} key={eachFolder} />
             </div>
         ))}

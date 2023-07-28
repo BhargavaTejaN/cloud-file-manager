@@ -1,18 +1,25 @@
 "use client";
 
+import React, {useState} from 'react'
 import menu from "@/data/menu";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation';
+
 import CreateFolderModel from "./Folder/CreateFolderModel";
+import UploadFileModel from "./File/UploadFileModel";
 
 const SideNavBar = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const {data : session} = useSession();
+  const [activeIndex,setActiveIndex]=useState(0);
+  const router = useRouter();
 
   const onMenuClick = (item, index) => {
     setActiveIndex(index);
+    router.push("/");
   };
 
-  return (
+  return session && (
     <div
       className="w-[250px]
     bg-white h-screen sticky top-0
@@ -22,7 +29,8 @@ const SideNavBar = () => {
       <div className="flex justify-center">
         <Image src="/logo.png" alt="logo" width={150} height={60} />
       </div>
-      <button onClick={() => window.my_modal_3.showModal()} className="text-[15px] flex gap-2 items-center bg-green-500 p-2 text-white rounded-md px-3 hover:scale-105 transition-all mt-5 w-full justify-center">
+      <button onClick={()=>window.upload_file.showModal()} className="flex gap-2 items-center text-[13px] bg-blue-500 p-2 text-white rounded-md px-3 hover:scale-105 transition-all mt-5 w-full justify-center"
+      >
         Add New File
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -89,6 +97,9 @@ const SideNavBar = () => {
       <dialog id="my_modal_3" className="modal">
         <CreateFolderModel />
       </dialog>
+      <dialog id="upload_file" className="modal">
+            <UploadFileModel closeModal={()=>window.upload_file.close()}/>
+        </dialog>
     </div>
   );
 };
